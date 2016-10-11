@@ -63,16 +63,19 @@ relOperation    : arithOperation ( relOperator arithOperation)*
 ;
 relOperator     :	('>' | '<' | '==' | '<=' | '>=' | '!=')
 ;			
-arithOperation  : arithMonom  (oper = ('+' | '-')  arithMonom)*
+arithOperation  : arithMonom  ((oper = ('+' | '-'))  arithMonom)*
 ;
-arithMonom      : arithSingle ((oper = '*' | '/')  arithSingle)*
+arithMonom      : arithSingle operTDArithSingle*
 ;
+
 arithSingle     :  '-' arithOperation #ArithMinusSingle
                    | '(' expr ')'     #ArithParsSingle
 				   | id arguments?    #ArithIdSingle
 				   | constant         #ArithConstantSingle
 				   
 		           
+;
+operTDArithSingle : (oper = ('*' | '/')) arithSingle
 ;
 constant        :    NUMBER  #ExprNum 
                    | STRING  #ExprString 
@@ -124,7 +127,7 @@ ID : [a-zA-Z][a-zA-Z_0-9]*
 // Ignored tokens
 SLC :   '/*'.*? '*/' -> skip
 ;
-MLC : '//'.*? '\r'?'\n' -> skip
+MLC : '//'.*?'\r'?'\n' -> skip
 ;         
 WS  :   [ \t\r\n]+ -> skip
 ; 

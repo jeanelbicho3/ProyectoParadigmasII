@@ -104,19 +104,24 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
 	                              OPERATION(oper, opers , expr));
 	   
     }
-   @Override
+    @Override
     public JSAst visitArithMonom(EightBitParser.ArithMonomContext ctx){
-		if (ctx.oper == null)
-		   return visit(ctx.arithSingle().get(0));
-		JSAst oper = ( ctx.oper.getType() == EightBitParser.MUL ) ? MUL : DIV;
-        List<JSAst> exprs = ctx.arithSingle().stream()
-	                                       .map( c -> visit(c) )
-										   .collect(Collectors.toList());
-		return exprs.stream()
-	               .skip(1)
-				   .reduce(exprs.get(0), (opers, expr) ->
-	                              OPERATION(oper, opers , expr));
-	}
+		//System.err.println(" ArithMonom " + ctx.getText());
+		JSAst left = visit(ctx.arithSingle());
+		return (ctx.operTDArithSingle() == null) 
+		       ? left
+		       :ctx.operTDArithSingle().stream()
+	                                   .map( c -> visit(c) )
+									   .reduce(left, (opers, expr) 
+									                      -> FOLD_LEFT(opers , expr));
+   } 
+   @Override
+   public JSAst visitOperTDArithSingle(EightBitParser.OperTDArithSingleContext ctx){
+	   //System.err.println(" OperTDArithSingle " + ctx.getText() + ctx.oper);
+	   JSAst oper = ( ctx.oper.getType() == EightBitParser.MUL ) ? MUL : DIV;
+	   JSAst right = visit(ctx.arithSingle());
+	   return OPERATION(oper, NULL, right);
+   }
    @Override
    public JSAst visitArithIdSingle(EightBitParser.ArithIdSingleContext ctx){
       return visit(ctx.id()); // ignoring by now arguments!!
