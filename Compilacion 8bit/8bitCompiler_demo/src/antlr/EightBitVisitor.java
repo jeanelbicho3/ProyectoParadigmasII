@@ -229,4 +229,10 @@ public interface EightBitVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArgs(EightBitParser.ArgsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link EightBitParser#printString}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintString(EightBitParser.PrintStringContext ctx);
 }

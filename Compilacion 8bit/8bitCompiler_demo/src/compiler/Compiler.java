@@ -20,7 +20,7 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
 	   return this.program;
    }
    protected List<JSAst> statements = new ArrayList<>();
-   
+
    public void genCode(){
       this.statements.stream()
 	                 .forEach( t -> t.genCode());
@@ -36,7 +36,7 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
    }
    @Override
    public JSAst visitEightFunction(EightBitParser.EightFunctionContext ctx){
-      
+
       JSId id = (JSId)visit(ctx.id());
 	  JSAst f = visit(ctx.formals());
 	  JSAst body = visit(ctx.funBody());
@@ -47,31 +47,31 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
    @Override
    public JSAst visitEmptyStatement(EightBitParser.EmptyStatementContext ctx){
       return EMPTY();
-	                
+
    }
-   
+
    @Override
    public JSAst visitReturnStatement(EightBitParser.ReturnStatementContext ctx){
       return RET(visit(ctx.expr()));
-	                
+
    }
    @Override
    public JSAst visitAssignStatement(EightBitParser.AssignStatementContext ctx){
 	  return ASSIGN(visit(ctx.id()), visit(ctx.expr()));
-	                
+
    }
    @Override
    public JSAst visitBlockStatement(EightBitParser.BlockStatementContext ctx){
 	  EightBitParser.ClosedListContext closedList = ctx.closedList();
-      return (closedList == null ) ? BLOCK() 
+      return (closedList == null ) ? BLOCK()
 	                               : visit(closedList);
    }
    @Override
-   public JSAst visitClosedList(EightBitParser.ClosedListContext ctx){					  
+   public JSAst visitClosedList(EightBitParser.ClosedListContext ctx){
 					   return  BLOCK(ctx.closedStatement().stream()
 	                                                      .map( c -> visit(c))
 										                  .collect(Collectors.toList()));
-	                
+
    }
    @Override
    public JSAst visitFormals(EightBitParser.FormalsContext ctx){
@@ -84,8 +84,8 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
 	   return  BLOCK(ctx.id().stream()
 						     .map( c -> visit(c))
 						     .collect(Collectors.toList()));
-	
-   } 
+
+   }
    @Override
    public JSAst visitId(EightBitParser.IdContext ctx){
 	  return  ID(ctx.ID().getText());
@@ -102,19 +102,19 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
 	               .skip(1)
 				   .reduce(exprs.get(0), (opers, expr) ->
 	                              OPERATION(oper, opers , expr));
-	   
+
     }
     @Override
     public JSAst visitArithMonom(EightBitParser.ArithMonomContext ctx){
 		//System.err.println(" ArithMonom " + ctx.getText());
 		JSAst left = visit(ctx.arithSingle());
-		return (ctx.operTDArithSingle() == null) 
+		return (ctx.operTDArithSingle() == null)
 		       ? left
 		       :ctx.operTDArithSingle().stream()
 	                                   .map( c -> visit(c) )
-									   .reduce(left, (opers, expr) 
+									   .reduce(left, (opers, expr)
 									                      -> FOLD_LEFT(opers , expr));
-   } 
+   }
    @Override
    public JSAst visitOperTDArithSingle(EightBitParser.OperTDArithSingleContext ctx){
 	   //System.err.println(" OperTDArithSingle " + ctx.getText() + ctx.oper);
@@ -138,6 +138,5 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
    public JSAst visitExprFalse(EightBitParser.ExprFalseContext ctx){
       return FALSE;
    }
-   
+
 }
-  

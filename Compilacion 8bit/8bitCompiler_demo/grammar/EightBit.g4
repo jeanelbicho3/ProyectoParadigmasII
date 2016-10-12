@@ -5,22 +5,22 @@
 grammar EightBit;
 
 // START
-eightProgram       : eightFunction+ 
+eightProgram       : eightFunction+
 ;
 ////////////////////////////////////////////////////////////////////////
 // FUN
-eightFunction      : 'fun' id formals funBody 
+eightFunction      : 'fun' id formals funBody
 ;
 
 formals            : '(' idList? ')'
 ;
-idList             : id (',' id)* 
+idList             : id (',' id)*
 ;
 id                 : ID
 ;
-funBody            :   letStatement       
-                     | closedStatement 
-                     | emptyStatement					 
+funBody            :   letStatement
+                     | closedStatement
+                     | emptyStatement
 ;
 ////////////////////////////////////////////////////////////////////////
 // STATEMENT
@@ -30,12 +30,12 @@ letStatement       : 'let' '{'  assignStmtList? '}' closedStatement
 ;
 assignStmtList     : assignStatement (';' assignStmtList)*
 ;
-closedStatement     : assignStatement  
-                    | whileStatement  
-					| ifStatement     
-					| callStatement   
-					| returnStatement 
-					| blockStatement  
+closedStatement     : assignStatement
+                    | whileStatement
+					| ifStatement
+					| callStatement
+					| returnStatement
+					| blockStatement
 ;
 assignStatement         : id '=' expr
 ;
@@ -62,7 +62,7 @@ relOperation    : arithOperation ( relOperator arithOperation)*
                     | '!'  relOperation
 ;
 relOperator     :	('>' | '<' | '==' | '<=' | '>=' | '!=')
-;			
+;
 arithOperation  : arithMonom  ((oper = ('+' | '-'))  arithMonom)*
 ;
 arithMonom      : arithSingle operTDArithSingle*
@@ -72,13 +72,13 @@ arithSingle     :  '-' arithOperation #ArithMinusSingle
                    | '(' expr ')'     #ArithParsSingle
 				   | id arguments?    #ArithIdSingle
 				   | constant         #ArithConstantSingle
-				   
-		           
+
+
 ;
 operTDArithSingle : (oper = ('*' | '/')) arithSingle
 ;
-constant        :    NUMBER  #ExprNum 
-                   | STRING  #ExprString 
+constant        :    NUMBER  #ExprNum
+                   | STRING  #ExprString
 				   | 'true'  #ExprTrue
 				   | 'false' #ExprFalse
 				   | 'null'  #ExprNull
@@ -89,10 +89,13 @@ arguments : '(' args? ')'
 
 args   :  expr (',' expr)*
 ;
+
+printString : '(' STRING? ')'
+;
 ///////////////////////////////////////////////////////////////////////
 // LEXER
 
-NUMBER : ('-')? INTEGER ('.' INTEGER)? 
+NUMBER : ('-')? INTEGER ('.' INTEGER)?
 ;
 fragment INTEGER : [0-9]+ ;
 
@@ -113,23 +116,21 @@ TRUE : 'true'
 ;
 FALSE : 'false'
 ;
-MUL :   '*' 
-; 
-DIV :   '/' 
+MUL :   '*'
 ;
-ADD :   '+' 
+DIV :   '/'
 ;
-SUB :   '-' 
+ADD :   '+'
 ;
-ID : [a-zA-Z][a-zA-Z_0-9]* 
+SUB :   '-'
+;
+ID : [a-zA-Z][a-zA-Z_0-9]*
 ;
 ////////////////////////////////////////////////
 // Ignored tokens
 SLC :   '/*'.*? '*/' -> skip
 ;
 MLC : '//'.*?'\r'?'\n' -> skip
-;         
+;
 WS  :   [ \t\r\n]+ -> skip
-; 
-
-
+;
