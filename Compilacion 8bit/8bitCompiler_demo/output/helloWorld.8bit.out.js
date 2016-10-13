@@ -1,1 +1,1 @@
-function helloWorld(La wea rara){La wea raraLa wea raraLa wea raraLa wea raraLa wea raraLa wea raraLa wea raraLa wea raraLa wea raraLa wea raraLa wea rara;return La wea rara;};
+function main(){

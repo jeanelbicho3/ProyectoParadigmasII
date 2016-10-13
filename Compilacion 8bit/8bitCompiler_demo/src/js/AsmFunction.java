@@ -25,6 +25,7 @@ public class AsmFunction implements AsmAst{
 	          .forEach(f -> f.genCode(out));
 
 	   out.print("){");
+
 	   if (this.body != null)
 	      this.body.genCode(out);
 	   out.print("};");
