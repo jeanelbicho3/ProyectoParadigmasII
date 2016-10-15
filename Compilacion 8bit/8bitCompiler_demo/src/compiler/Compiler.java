@@ -68,6 +68,7 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
    }
    @Override
    public JSAst visitClosedList(EightBitParser.ClosedListContext ctx){
+          System.out.println("Pase por la wea");
 					   return  BLOCK(ctx.closedStatement().stream()
 	                                                      .map( c -> visit(c))
 										                  .collect(Collectors.toList()));

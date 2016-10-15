@@ -8,7 +8,7 @@ public class AsmAtom<T> implements AsmAst{
       this.value = value;
    }
    public void genCode(PrintStream out){
-     //out.print(this.value);
-     out.print("La wea rara");
+     out.print(this.value);
+     //out.print("La wea rara");
    }
 }

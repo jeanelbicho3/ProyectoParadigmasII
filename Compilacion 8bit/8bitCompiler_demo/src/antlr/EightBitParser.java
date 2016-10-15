@@ -345,6 +345,8 @@ public class EightBitParser extends Parser {
 			return getRuleContext(LetStatementContext.class,0);
 		}
 		public ClosedStatementContext closedStatement() {
+			
+			System.err.println("Closed statement wea");
 			return getRuleContext(ClosedStatementContext.class,0);
 		}
 		public EmptyStatementContext emptyStatement() {
@@ -879,6 +881,7 @@ public class EightBitParser extends Parser {
 
 	public static class BlockStatementContext extends ParserRuleContext {
 		public ClosedListContext closedList() {
+			System.out.println("Oli sentido otra vez");
 			return getRuleContext(ClosedListContext.class,0);
 		}
 		public BlockStatementContext(ParserRuleContext parent, int invokingState) {
@@ -927,14 +930,17 @@ public class EightBitParser extends Parser {
 
 	public static class ClosedListContext extends ParserRuleContext {
 		public List<ClosedStatementContext> closedStatement() {
+			System.err.println("NO me veo");
 			return getRuleContexts(ClosedStatementContext.class);
 		}
 		public ClosedStatementContext closedStatement(int i) {
 			return getRuleContext(ClosedStatementContext.class,i);
 		}
 		public ClosedListContext(ParserRuleContext parent, int invokingState) {
+			System.err.println("Inicio del fin wea");
 			super(parent, invokingState);
 		}
+		
 		@Override public int getRuleIndex() { return RULE_closedList; }
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
@@ -944,6 +950,7 @@ public class EightBitParser extends Parser {
 	}
 
 	public final ClosedListContext closedList() throws RecognitionException {
+		System.err.println("oli");
 		ClosedListContext _localctx = new ClosedListContext(_ctx, getState());
 		enterRule(_localctx, 32, RULE_closedList);
 		int _la;

@@ -63,11 +63,15 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
    @Override
    public AsmAst visitBlockStatement(EightBitParser.BlockStatementContext ctx){
 	  EightBitParser.ClosedListContext closedList = ctx.closedList();
+      System.err.println("Pase por la wea anterior");
+      
       return (closedList == null ) ? BLOCK()
 	                               : visit(closedList);
    }
    @Override
    public AsmAst visitClosedList(EightBitParser.ClosedListContext ctx){
+              System.err.println("Pase por la wea");
+              System.err.println(ctx.closedStatement().toString());
 					   return  BLOCK(ctx.closedStatement().stream()
 	                                                      .map( c -> visit(c))
 										                  .collect(Collectors.toList()));
@@ -88,6 +92,7 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
    }
    @Override
    public AsmAst visitId(EightBitParser.IdContext ctx){
+     System.err.println("Pase por la wea ID:"+ctx.ID().getText());
 	  return  ID(ctx.ID().getText());
    }
    @Override

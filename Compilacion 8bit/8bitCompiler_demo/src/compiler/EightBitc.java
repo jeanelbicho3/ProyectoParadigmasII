@@ -34,7 +34,7 @@ public class EightBitc {
         ParseTree tree = parser.eightProgram();
 
 		System.err.println("EightBitc v0.0 CR II-2016");
-
+        
 		//Compiler comp = new Compiler();
 		compilerCuleadito comp = new compilerCuleadito();
 		comp.compile(tree);

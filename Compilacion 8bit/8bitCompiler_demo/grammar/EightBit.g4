@@ -90,8 +90,10 @@ arguments : '(' args? ')'
 args   :  expr (',' expr)*
 ;
 
-printString : '(' STRING? ')'
-;
+//printString : '(' STRING? ')'
+//printString : ID
+//;
+
 ///////////////////////////////////////////////////////////////////////
 // LEXER
 
