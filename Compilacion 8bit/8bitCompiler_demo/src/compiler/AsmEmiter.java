@@ -7,7 +7,11 @@ public interface AsmEmiter{
 
    default AsmAst PROGRAM(List<AsmAst> functions){ return new AsmProgram(functions);}
 
-   default AsmAst BLOCK(List<AsmAst> members){ return new AsmBlock(members);}
+   default AsmAst BLOCK(List<AsmAst> members){ 
+       System.err.println(members);
+
+       return new AsmBlock(members);
+    }
    default AsmAst BLOCK(){ return new AsmBlock(Arrays.asList());}
 
    default AsmAst EMPTY(){
@@ -27,7 +31,7 @@ public interface AsmEmiter{
        return new AsmIf(c, e, t);
    }
 
-   default AsmCall CALL(AsmAst f, List<AsmAst> args){
+   default AsmCall CALL(AsmId f, List<AsmAst> args){
        return new AsmCall(f, args);
    }
    default AsmAst OPERATION(AsmAst oper, AsmAst left, AsmAst right){
@@ -46,7 +50,7 @@ public interface AsmEmiter{
    //default List<AsmAst> ARGS(AsmAst... args){ return Arrays.asList(args);}
    default List<AsmAst> FORMALS(AsmAst... args){ return Arrays.asList(args);}
 
-	 default AsmString  STRING(String value){return new AsmString(value);}
+   default AsmString  STRING(String value){return new AsmString(value);}
 
 
    default AsmAst RET(AsmAst e){ return new AsmReturn(e);}

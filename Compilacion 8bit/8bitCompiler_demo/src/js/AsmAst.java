@@ -6,5 +6,6 @@ public interface AsmAst{
       genCode(System.out);
    }
    default void genCode(PrintStream out){
+       
    }
 }

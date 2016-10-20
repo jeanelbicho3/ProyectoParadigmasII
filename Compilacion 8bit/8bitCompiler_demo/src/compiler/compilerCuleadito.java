@@ -22,6 +22,7 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
    protected List<AsmAst> statements = new ArrayList<>();
 
    public void genCode(){
+      
       this.statements.stream()
 	                 .forEach( t -> t.genCode());
    }
@@ -30,7 +31,8 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
    }
    @Override
    public AsmAst visitEightProgram(EightBitParser.EightProgramContext ctx){
-	   ctx.eightFunction().stream()
+	   //System.err.println("Visite eight program");
+     ctx.eightFunction().stream()
 	                      .forEach( fun -> visit(fun) );
 	   return this.program = PROGRAM(this.statements);
    }
@@ -63,28 +65,71 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
    @Override
    public AsmAst visitBlockStatement(EightBitParser.BlockStatementContext ctx){
 	  EightBitParser.ClosedListContext closedList = ctx.closedList();
-      System.err.println("Pase por la wea anterior");
+      System.err.println("Pase por la wea BLOCK STATEMENT");
       
       return (closedList == null ) ? BLOCK()
 	                               : visit(closedList);
    }
    @Override
    public AsmAst visitClosedList(EightBitParser.ClosedListContext ctx){
-              System.err.println("Pase por la wea");
-              System.err.println(ctx.closedStatement().toString());
-					   return  BLOCK(ctx.closedStatement().stream()
-	                                                      .map( c -> visit(c))
+             
+             /*LA SALVACION!!*/
+             //EightBitParser.CallStatementContext llamaditaCuliola = ctx.closedStatement().callStatement();
+             System.err.println("Pase por la wea CLOSED LIST");
+             //System.err.println(ctx.closedStatement().get(0));
+            
+					   return  BLOCK(ctx.closedStatement()/*.callStatement()*/
+                                                /*.arguments()*/
+                                                .stream()
+	                                              .map( c -> visit(c))
 										                  .collect(Collectors.toList()));
-
    }
+
+   @Override 
+   public AsmAst visitCallStatement(EightBitParser.CallStatementContext ctx) {
+      //return visitChildren(ctx); 
+
+      System.err.println("Pase por la wea CALL");
+     
+      //AsmId id = (AsmId)visit(ctx.ID());
+      AsmId id = ID(ctx.ID().getText());
+
+      System.err.println("ID: "+ctx.ID());
+      System.err.println(id);
+
+      //System.err.println("VISIT ID: "+visit(ctx.ID()));
+
+      
+      return CALL( id , ctx.arguments().args().expr()
+                                                    .stream()
+                                                    .map( c -> visit(c))
+										                      .collect(Collectors.toList()));
+  
+    }
+
+    @Override 
+    public AsmAst visitArithConstantSingle(EightBitParser.ArithConstantSingleContext ctx) {
+       
+       System.err.println("Pase por la wea CONSTANT");
+
+       System.err.println(ctx.constant().getText());
+
+       return visit(ctx.constant());
+       //return visitChildren(ctx); 
+      
+    }
+
+
    @Override
    public AsmAst visitFormals(EightBitParser.FormalsContext ctx){
+     System.err.println("Pase por la wea FORMALS");
 	   EightBitParser.IdListContext idList = ctx.idList();
 	   return (idList == null ) ? BLOCK()
 	                            : visit(idList);
    }
    @Override
    public AsmAst visitIdList(EightBitParser.IdListContext ctx){
+     System.err.println("Pase por la wea ID LIST");
 	   return  BLOCK(ctx.id().stream()
 						     .map( c -> visit(c))
 						     .collect(Collectors.toList()));
@@ -92,8 +137,10 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
    }
    @Override
    public AsmAst visitId(EightBitParser.IdContext ctx){
+
      System.err.println("Pase por la wea ID:"+ctx.ID().getText());
 	  return  ID(ctx.ID().getText());
+
    }
    @Override
     public AsmAst visitArithOperation(EightBitParser.ArithOperationContext ctx) {
@@ -111,8 +158,15 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
     }
     @Override
     public AsmAst visitArithMonom(EightBitParser.ArithMonomContext ctx){
-		//System.err.println(" ArithMonom " + ctx.getText());
+		System.err.println("Pase por la wea ArithMonom " + ctx.getText());
 		AsmAst left = visit(ctx.arithSingle());
+
+    System.err.println("Arith Single ->");
+    System.err.println(ctx.arithSingle());
+
+    System.err.println("Visit(Arith Single) ->");
+    System.err.println(left);
+
 		return (ctx.operTDArithSingle() == null)
 		       ? left
 		       :ctx.operTDArithSingle().stream()
@@ -129,6 +183,9 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
    }
    @Override
    public AsmAst visitArithIdSingle(EightBitParser.ArithIdSingleContext ctx){
+
+      System.err.println("Pase por la wea ARITH ID SINGLE " + ctx.getText());
+
       return visit(ctx.id()); // ignoring by now arguments!!
    }
    @Override
@@ -142,13 +199,26 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
    @Override
    public AsmAst visitExprFalse(EightBitParser.ExprFalseContext ctx){
       return FALSE;
-    }
+   }
 
-    public AsmAst visitPrintString(EightBitParser.ExprStringContext ctx){
+   @Override
+   public AsmAst visitExprString(EightBitParser.ExprStringContext ctx){
+      return STRING(ctx.STRING().getText());
+   }
+
+
+    /*public AsmAst visitPrintString(EightBitParser.ExprStringContext ctx){
 
       return  STRING(ctx.STRING().getText());
 
     }
+    */
+    /*@Override
+    public AsmAst visitArithSingle(EightBitParser.ArithSingleContext ctx){
+
+      return visit(ctx.arithOperation());
+
+    }*/
 
 
 }

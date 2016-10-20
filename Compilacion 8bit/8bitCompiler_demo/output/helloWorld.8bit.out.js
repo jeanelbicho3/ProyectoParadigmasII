@@ -1,1 +1,2 @@
-function main(){};
+function main(){print_string("Hello World!"); 
+};

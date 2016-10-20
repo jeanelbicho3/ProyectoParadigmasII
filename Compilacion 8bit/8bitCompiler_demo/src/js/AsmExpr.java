@@ -1,12 +1,12 @@
 package eightBit.js;
 import java.util.*;
 import java.io.*;
-public class AsmBlock implements AsmAst {
+public class AsmExpr implements AsmAst {
    protected List<AsmAst> members;
    public List<AsmAst> getMembers(){
 	   return this.members;
    }
-   public AsmBlock(List<AsmAst> members){
+   public AsmExpr(List<AsmAst> members){
       this.members = members;
    }
    public void genCode(PrintStream out){
