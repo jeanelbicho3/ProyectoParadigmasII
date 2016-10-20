@@ -14,6 +14,11 @@ public class AsmProgram implements AsmAst{
 	  this.name = name;
    }
    public void genCode(PrintStream out){
+       out.print(".init:\n");
+       out.print("\tMOV D, 232\n");
+       out.print("\tJMP main\n");
+       out.print("; Data Area\n");
        functions.stream().forEach( t -> t.genCode(out));
+       out.print("; Code Area\n");
    }
 }

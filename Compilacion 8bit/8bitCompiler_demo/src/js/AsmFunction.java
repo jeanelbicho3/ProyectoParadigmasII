@@ -17,6 +17,15 @@ public class AsmFunction implements AsmAst{
 	  this.name = name;
    }
    public void genCode(PrintStream out){
+       /*if(this.name.getValue() != "main"){
+           out.print("ERRROR NO MAIN FUNCTION");
+           return;
+       }else{
+
+       }*/
+       if(this.name.getValue() == "main"){
+           
+       }
        out.format("function %s(", this.name.getValue());
 	   if (this.formals != null)
 	      this.formals

@@ -16,6 +16,7 @@ import java.util.stream.*;
 
 public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements AsmEmiter{
    protected AsmAst program;
+   
    public AsmAst getProgram(){
 	   return this.program;
    }
@@ -87,18 +88,13 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
 
    @Override 
    public AsmAst visitCallStatement(EightBitParser.CallStatementContext ctx) {
-      //return visitChildren(ctx); 
 
       System.err.println("Pase por la wea CALL");
-     
-      //AsmId id = (AsmId)visit(ctx.ID());
+  
       AsmId id = ID(ctx.ID().getText());
 
       System.err.println("ID: "+ctx.ID());
       System.err.println(id);
-
-      //System.err.println("VISIT ID: "+visit(ctx.ID()));
-
       
       return CALL( id , ctx.arguments().args().expr()
                                                     .stream()
