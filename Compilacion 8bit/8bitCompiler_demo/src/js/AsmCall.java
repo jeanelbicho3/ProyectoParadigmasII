@@ -65,23 +65,26 @@ public class AsmCall implements AsmAst{
         out.print("\n");
         out.format("%s: ", this.f.getValue());
         out.print("\n");
+        */
+        //out.print("Hello World culeadito? -> "+args);
 
-        out.print("\t MOVE C, " + args + "; ");
+        this.args.stream().filter( t -> t != null).forEach(f -> f.genCode(out));
+        
         out.print("\n");
-        out.print("\t MOVE D, " + args + "; ");
 
-        out.print("\n");*/
+        out.print(this.f.getValue()+":\n");
+        out.print("\tPOP C\n");
+        out.print("\tPOP B\n");
+        out.print("\tPUSH C\n");
 
-        out.print(this.f.getVaule()+":\n");
-        out.print("POP C\n");
-        out.print("POP B\n");
-        out.print("PUSH C\n");
-
-        switch(tc.hm.get(this.f.getValue())){
-            
-            case 1: contCL++;
+        //System.err.println(tc.hm.get(this.f.getValue()));
+        switch(Integer.parseInt(tc.hm.get(this.f.getValue()).toString())){
+            //System.err.println("Pase por aqui");
+            case 1: 
+                    System.err.println("Pase por print_string");
+                    contCL++;
                     out.print(".print_string_loop_"+ contCL + ":\n");
-                    out.print("\t\n");
+                    //out.print("\n");
                     out.print("\tMOV C, [B]\n");
                     out.print("\tCMP C, 0\n");
                     out.print("\tJE .print_string_exit\n");
@@ -89,6 +92,7 @@ public class AsmCall implements AsmAst{
                     out.print("\tINC D\n");
                     out.print("\tINC B\n");
                     out.print("\tJMP .print_string_loop_01\n");
+
              break;
 
              default:  break; //Funcion vacia      

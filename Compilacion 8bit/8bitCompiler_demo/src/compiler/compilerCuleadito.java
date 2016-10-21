@@ -202,6 +202,12 @@ public class compilerCuleadito extends EightBitBaseVisitor<AsmAst> implements As
       return STRING(ctx.STRING().getText());
    }
 
+   @Override 
+   public T visitArithConstantSingle(EightBitParser.ArithConstantSingleContext ctx) {
+       
+        return visit(ctx.constant());
+        
+    }
 
     /*public AsmAst visitPrintString(EightBitParser.ExprStringContext ctx){
 

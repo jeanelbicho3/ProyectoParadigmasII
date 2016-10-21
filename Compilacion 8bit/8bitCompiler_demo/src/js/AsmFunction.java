@@ -23,20 +23,23 @@ public class AsmFunction implements AsmAst{
        }else{
 
        }*/
-       if(this.name.getValue() == "main"){
-           
-       }
-       out.format("function %s(", this.name.getValue());
-	   if (this.formals != null)
-	      this.formals
-	          .stream()
-	          .filter(f -> f != null)
-	          .forEach(f -> f.genCode(out));
+      // if(this.name.getValue() == "main"){
+           /*hacer main y si no viene main*/
 
-	   out.print("){");
+        if(this.name.getValue() == "main"){
+               out.print("MAINCULEADITO");
+        }
+           out.print(".init:\n");
+                out.print("\tMOV D, 232\n");
+                out.print("\tJMP main\n");
+                out.print(".main_data:\n");
+                out.print(".UNDEF: DB 255\n");
+           
+      // }
+       
 
 	   if (this.body != null)
 	      this.body.genCode(out);
-	   out.print("};");
+	  
    }
 }
